@@ -19,7 +19,7 @@ class Ksa_Riel_Estate
             add_action('init', [$this, 'create_post_type__property']);
             add_action('single_template', [$this, 'override_single_template']);
             add_shortcode('property_filter', array($this, 'shortcode_property_filter'));
-            add_shortcode('init', array($this, 'register_sidebar'));
+            add_shortcode('widgets_init', array($this, 'register_sidebar'));
             add_filter('widget_text', 'do_shortcode');
             add_action('wp_enqueue_scripts', [$this, 'add_custom_scripts']);
             add_action('wp_ajax_property_filter', [$this, 'property_filter_fun']);
@@ -46,12 +46,8 @@ class Ksa_Riel_Estate
     }
 
     public function override_single_template( $single_template ){
-//        global $post;
-
         $pattern = "~.+(\/|\\\)(.+.php)~";
         preg_match( $pattern, $single_template, $matches);
-//        var_dump($single_template, $matches[2]);
-//        die;
         if($this->post_type == get_post_type(get_queried_object_id())
             && $this->post_type .'.php' != $matches[2]) {
             $file = dirname(__FILE__) .'/templates/single-'. $this->post_type .'.php';
